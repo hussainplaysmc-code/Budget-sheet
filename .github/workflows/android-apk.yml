@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -36,3 +36,16 @@ jobs:
           name: pocket-ledger-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+      - name: Publish first APK release
+        if: contains(github.event.head_commit.message, '[publish-apk]')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v1.0.0 "android/app/build/outputs/apk/debug/app-debug.apk#Pocket-Ledger-v1.0.0-debug.apk" \
+            --target "$GITHUB_SHA" \
+            --title "Pocket Ledger v1.0.0" \
+            --notes "First Android build of Pocket Ledger.
+
+          Download the APK below and install it on an Android device running Android 6.0 or later. You may need to allow installation from your browser or file manager.
+
+          This is a debug-signed APK for testing and personal use, not a production-signed Play Store release. Future builds may not be upgrade-compatible. Budget data is stored on the device; uninstalling the app or clearing its data can remove it."

@@ -1,0 +1,6 @@
+{
+  "appId": "com.pocketledger.app",
+  "appName": "Pocket Ledger",
+  "webDir": "dist",
+  "android": { "backgroundColor": "#f7f8f5" }
+}
